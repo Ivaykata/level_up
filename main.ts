@@ -17,6 +17,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, othe
     mySprite.setVelocity(0, 0)
     miniMenu.setDimensions(myMenu, 100, 100)
     myMenu.setPosition(mySprite.x, mySprite.y)
+    myMenu.setFlag(SpriteFlag.Invisible, false)
     isOpen = true
     miniMenu.onButtonPressed(myMenu, miniMenu.Button.B, function (selection, selectedIndex) {
         choice = selectedIndex
@@ -30,12 +31,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, othe
         }
         isOpen = false
         }
+        myMenu.setFlag(SpriteFlag.Invisible, true)
+        
     })
-}
-info.onLifeZero(function () {
-    mySprite.setPosition(80, 184)
-    mySprite.setVelocity(0, 0)
-    showUpgradeMenu()
     info.setLife(1)
 })
 })
