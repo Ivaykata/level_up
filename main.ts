@@ -15,8 +15,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, othe
     info.onLifeZero(function () {
     mySprite.setPosition(80, 184)
     mySprite.setVelocity(0, 0)
-    myMenu.setPosition(mySprite.x, mySprite.y)
     miniMenu.setDimensions(myMenu, 100, 100)
+    myMenu.setPosition(mySprite.x, mySprite.y)
     myMenu.setFlag(SpriteFlag.Invisible, false)
     isOpen = true
     miniMenu.onButtonPressed(myMenu, miniMenu.Button.B, function (selection, selectedIndex) {
@@ -24,7 +24,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, othe
         if(isOpen ==true)
         {
         if (choice == 0) {
-            moveSpeed += 150
+            moveSpeed += 15
             controller.moveSprite(mySprite, moveSpeed, 0)
         } else if (choice == 1) {
             jumpPower += -30
@@ -32,6 +32,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, othe
         isOpen = false
         }
         myMenu.setFlag(SpriteFlag.Invisible, true)
+        
     })
     info.setLife(1)
 })
@@ -49,8 +50,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Spike, function (sprite, otherSp
     mySprite.setPosition(21, 94)
 })
 let choice = 0
-let moveSpeed = 0
 let myMenu: Sprite = null
+let jumpPower = 0
+let moveSpeed = 0
 let mySprite: Sprite = null
 let jumpPower = 0
 let isOpen = false
@@ -820,10 +822,6 @@ mySprite = sprites.create(img`
     . . . . . 8 8 . 8 8 . . . . . . 
     . . . . . 8 8 . 8 8 . . . . . . 
     `, SpriteKind.Player)
-myMenu = miniMenu.createMenu(
-miniMenu.createMenuItem("+15 Speed"),
-miniMenu.createMenuItem("+30 Jump")
-)
 moveSpeed = 100
 jumpPower = -150
 scene.setBackgroundImage(img`
