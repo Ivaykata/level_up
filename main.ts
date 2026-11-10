@@ -2,6 +2,9 @@ namespace SpriteKind {
     export const Spike = SpriteKind.create()
     export const Obsticle = SpriteKind.create()
 }
+/**
+ * Auto-generated code. Do not edit.
+ */
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (mySprite.isHittingTile(CollisionDirection.Bottom)) {
         mySprite.vy = jumpPower
