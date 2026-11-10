@@ -9,36 +9,61 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
 })
+function showUpgradeMenu () {
+    currentOption = []
+    let tempPool = upgradeNames.slice()
+choice1 = tempPool.removeAt(randint(0, tempPool.length - 1))
+    choice2 = tempPool.removeAt(randint(0, tempPool.length - 1))
+    choice3 = tempPool.removeAt(randint(0, tempPool.length - 1))
+    currentOption.push(choice1)
+    currentOption.push(choice2)
+    currentOption.push(choice3)
+    if (myMenu) {
+        miniMenu.close(myMenu)
+    }
+    myMenu = miniMenu.createMenu(
+    miniMenu.createMenuItem(choice1),
+    miniMenu.createMenuItem(choice2),
+    miniMenu.createMenuItem(choice3)
+    )
+    miniMenu.setDimensions(myMenu, 100, 100)
+    myMenu.setPosition(mySprite.x, mySprite.y)
+    isOpen = true
+    miniMenu.onButtonPressed(myMenu, miniMenu.Button.B, function (selection, selectedIndex) {
+        if (isOpen == true) {
+            selectedUpgradeText = currentOption[selectedIndex]
+            if (selectedUpgradeText == "+15 Speed") {
+                moveSpeed += 15
+                controller.moveSprite(mySprite, moveSpeed, 0)
+            } else if (selectedUpgradeText == "+30 Jump") {
+                jumpPower += 0 - 30
+            } else if (selectedUpgradeText == "+ Max Hp") {
+                info.changeLifeBy(2)
+            }
+            isOpen = false
+            miniMenu.close(myMenu)
+            myMenu = null
+        }
+    })
+}
 info.onLifeZero(function () {
     mySprite.setPosition(80, 184)
     mySprite.setVelocity(0, 0)
-    miniMenu.setDimensions(myMenu, 100, 100)
-    myMenu.setPosition(mySprite.x, mySprite.y)
-    myMenu.setFlag(SpriteFlag.Invisible, false)
-    isOpen = true
-    miniMenu.onButtonPressed(myMenu, miniMenu.Button.B, function (selection, selectedIndex) {
-        choice = selectedIndex
-        if(isOpen == true){
-        if (choice == 0) {
-            moveSpeed += 15
-            controller.moveSprite(mySprite, moveSpeed, 0)
-        } else if (choice == 1) {
-            jumpPower += -30
-        }
-            isOpen = false
-        }
-        myMenu.setFlag(SpriteFlag.Invisible, true)
-        
-    })
+    showUpgradeMenu()
     info.setLife(1)
 })
+let selectedUpgradeText = ""
 let isOpen = false
-let choice = 0
-let myMenu: Sprite = null
+let choice3 = ""
+let choice2 = ""
+let choice1 = ""
+let currentOption: string[] = []
 let jumpPower = 0
 let moveSpeed = 0
 let mySprite: Sprite = null
-let index = 0
+let seletedUpgradeText = ""
+let myMenu: Sprite = null
+let upgradeNames = ["+15 Speed", "+30 Jump", "+ Max Hp"]
 mySprite = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . 3 3 3 3 . . . . . . 
@@ -206,10 +231,6 @@ let Spike = sprites.create(img`
 info.setLife(1)
 mySprite.setPosition(80, 184)
 Spike.setPosition(20, 180)
-myMenu = miniMenu.createMenu(
-miniMenu.createMenuItem("+15 Speed"),
-miniMenu.createMenuItem("+30 Jump")
-)
 forever(function () {
     console.log(mySprite.y)
     console.log(mySprite.x)
