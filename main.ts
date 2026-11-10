@@ -10,15 +10,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, othe
     info.changeLifeBy(-1)
 })
 info.onLifeZero(function () {
-    let isUpgrading = true
     mySprite.setPosition(80, 184)
     mySprite.setVelocity(0, 0)
-    myMenu = miniMenu.createMenu(
-    miniMenu.createMenuItem("+15 Speed"),
-    miniMenu.createMenuItem("+30 Jump")
-    )
     myMenu.setPosition(mySprite.x, mySprite.y)
     miniMenu.setDimensions(myMenu, 100, 100)
+    myMenu.setFlag(SpriteFlag.Invisible, false)
     miniMenu.onButtonPressed(myMenu, miniMenu.Button.B, function (selection, selectedIndex) {
         choice = selectedIndex
         if (choice == 0) {
@@ -27,13 +23,13 @@ info.onLifeZero(function () {
         } else if (choice == 1) {
             jumpPower += -30
         }
-        miniMenu.close(myMenu)
+        myMenu.setFlag(SpriteFlag.Invisible, true)
     })
     info.setLife(1)
 })
 let choice = 0
-let myMenu: Sprite = null
 let moveSpeed = 0
+let myMenu: Sprite = null
 let mySprite: Sprite = null
 let index = 0
 let jumpPower = -150
@@ -55,6 +51,10 @@ mySprite = sprites.create(img`
     . . . . . 8 8 . 8 8 . . . . . . 
     . . . . . 8 8 . 8 8 . . . . . . 
     `, SpriteKind.Player)
+myMenu = miniMenu.createMenu(
+miniMenu.createMenuItem("+15 Speed"),
+miniMenu.createMenuItem("+30 Jump")
+)
 moveSpeed = 100
 jumpPower = -150
 scene.setBackgroundImage(img`
