@@ -3,7 +3,7 @@ namespace SpriteKind {
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (mySprite.isHittingTile(CollisionDirection.Bottom)) {
-        mySprite.vy = -150
+        mySprite.vy = jumpPower
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, otherSprite) {
@@ -12,27 +12,33 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Obsticle, function (sprite, othe
 info.onLifeZero(function () {
     mySprite.setPosition(80, 184)
     mySprite.setVelocity(0, 0)
-    myMenu.setPosition(mySprite.x, mySprite.y)
     miniMenu.setDimensions(myMenu, 100, 100)
+    myMenu.setPosition(mySprite.x, mySprite.y)
     myMenu.setFlag(SpriteFlag.Invisible, false)
+    isOpen = true
     miniMenu.onButtonPressed(myMenu, miniMenu.Button.B, function (selection, selectedIndex) {
         choice = selectedIndex
+        if(isOpen == true){
         if (choice == 0) {
-            moveSpeed += 150
+            moveSpeed += 15
             controller.moveSprite(mySprite, moveSpeed, 0)
         } else if (choice == 1) {
             jumpPower += -30
         }
+            isOpen = false
+        }
         myMenu.setFlag(SpriteFlag.Invisible, true)
+        
     })
     info.setLife(1)
 })
+let isOpen = false
 let choice = 0
-let moveSpeed = 0
 let myMenu: Sprite = null
+let jumpPower = 0
+let moveSpeed = 0
 let mySprite: Sprite = null
 let index = 0
-let jumpPower = -150
 mySprite = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . 3 3 3 3 . . . . . . 
@@ -51,10 +57,6 @@ mySprite = sprites.create(img`
     . . . . . 8 8 . 8 8 . . . . . . 
     . . . . . 8 8 . 8 8 . . . . . . 
     `, SpriteKind.Player)
-myMenu = miniMenu.createMenu(
-miniMenu.createMenuItem("+15 Speed"),
-miniMenu.createMenuItem("+30 Jump")
-)
 moveSpeed = 100
 jumpPower = -150
 scene.setBackgroundImage(img`
@@ -204,6 +206,10 @@ let Spike = sprites.create(img`
 info.setLife(1)
 mySprite.setPosition(80, 184)
 Spike.setPosition(20, 180)
+myMenu = miniMenu.createMenu(
+miniMenu.createMenuItem("+15 Speed"),
+miniMenu.createMenuItem("+30 Jump")
+)
 forever(function () {
     console.log(mySprite.y)
     console.log(mySprite.x)
